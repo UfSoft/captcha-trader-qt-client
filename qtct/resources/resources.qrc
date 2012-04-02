@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>send.png</file>
+        <file>skip.png</file>
+        <file>start.png</file>
+        <file>stop.png</file>
+        <file>captcha_wait.svg</file>
+        <file>captcha_failed.svg</file>
+        <file>captcha_ok.svg</file>
+        <file>logo.svg</file>
+    </qresource>
+</RCC>
