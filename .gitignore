@@ -1,0 +1,2 @@
+qtct/ui/*.py
+qtct/i18n/*/LC_MESSAGES/*.mo

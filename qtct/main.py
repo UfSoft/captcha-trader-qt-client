@@ -20,7 +20,7 @@ def main():
 
     if not QtGui.QSystemTrayIcon.isSystemTrayAvailable():
         QtGui.QMessageBox.critical(
-            None, _("Systray"),
+            None, "Systray",
             _("I couldn't detect any system tray on this system.")
         )
         sys.exit(1)
@@ -30,7 +30,7 @@ def main():
 
     from optparse import OptionParser
     import qtct
-    from qtct.application import Application
+    from qtct.mainwindow import MainWindow
     from qtct.utils import log
     parser = OptionParser("qt-captcha-trader", version=qtct.__version__)
     parser.add_option(
@@ -44,7 +44,7 @@ def main():
     import logging
     logging.getLogger("qtct.main").info("Starting application")
 
-    app = Application(qtapp)
+    app = MainWindow(qtapp)
 
     from qtct.utils.debug import install_ui_except_hook
     install_ui_except_hook()
