@@ -36,6 +36,8 @@ def install_core_except_hook():
 
     sys.excepthook = custom_except_hook
 
+
+
 def install_ui_except_hook():
     import os
     from PySide import QtCore, QtGui
@@ -48,11 +50,13 @@ def install_ui_except_hook():
             self._setupUi()
             name = QtCore.QCoreApplication.applicationName()
             version = QtCore.QCoreApplication.applicationVersion()
-            errorText = _(
-                "Application Name: %(appname)s\nVersion: %(version)s\n\n%(error)s"
-                % dict(appname=name, version=version, error=error)
-            )
-            # Under windows, we end up with an error report without linesep if we don't mangle it
+            errorText = _("""\
+Application Name: %(appname)s
+Version: %(version)s
+
+%(error)s""", appname=name, version=version, error=error)
+            # Under windows, we end up with an error report without linesep if
+            # we don't mangle it
             errorText = errorText.replace('\n', os.linesep)
             self.errorTextEdit.setPlainText(errorText)
 
@@ -97,9 +101,11 @@ def install_ui_except_hook():
             self.verticalLayout.addLayout(self.horizontalLayout)
 
         def accept(self):
-#            text = self.errorTextEdit.toPlainText()
-#            url = QUrl("mailto:support@hardcoded.net?SUBJECT=Error Report&BODY=%s" % text)
-#            QtGui.QDesktopServices.openUrl(url)
+            text = self.errorTextEdit.toPlainText()
+            url = QtCore.QUrl(
+                "mailto:projects@ufsoft.org?SUBJECT=Error Report&BODY=%s" % text
+            )
+            QtGui.QDesktopServices.openUrl(url)
             QtGui.QDialog.accept(self)
 
     def custom_except_hook(exctype, value, tb):
