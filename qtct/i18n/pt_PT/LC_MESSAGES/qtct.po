@@ -1,0 +1,296 @@
+# Portuguese (Portugal) translations for QtCTC.
+# Copyright (C) 2012 UfSoft.org
+# This file is distributed under the same license as the QtCTC project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: QtCTC 1.0-dev\n"
+"Report-Msgid-Bugs-To: pedro@algarvio.me\n"
+"POT-Creation-Date: 2012-04-21 18:43+0100\n"
+"PO-Revision-Date: 2012-04-03 16:41+0100\n"
+"Last-Translator: Pedro Algarvio <pedro@algarvio.me>\n"
+"Language-Team: pt_PT <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: qtct/client.py:88
+msgid ""
+"The server encountered an unexpected situation and the request was "
+"aborted."
+msgstr "O servidor encontrou uma sictuação inexperada e o pedido foi abortado."
+
+#: qtct/client.py:90
+msgid "The request was not submitted correctly."
+msgstr "O pedido não foi enviado correctamente."
+
+#: qtct/client.py:91
+msgid "The username/password combination was incorrect."
+msgstr "A combinação nome de utilizador/palavra-passe estava incorrecta."
+
+#: qtct/client.py:92
+msgid ""
+"The user has exceeded the number of connections permitted. A normal "
+"response is to try again later and dequeue existing connections."
+msgstr ""
+"O utilizador excedeu o número de connecções permitidas. Uma resposta \"\n"
+"\"\n"
+"\"\"normal é tentar novamente mais tarde e cancelar ligações existentes."
+
+#: qtct/client.py:95
+msgid ""
+"The maximum request rate (configured on the account page) has been "
+"exceeded."
+msgstr "O número máximo de pedidos(configurados na página da conta) foi excedido."
+
+#: qtct/client.py:97
+msgid ""
+"The maximum hourly submission rate (configured on the account page) has "
+"been exceeded."
+msgstr ""
+"O número máximo por hora de submissão(configurado na página da conta) \"\n"
+"\"foi\"\n"
+"\"\n"
+"\"\" excedido."
+
+#: qtct/main.py:24
+msgid "I couldn't detect any system tray on this system."
+msgstr "Não foi detectado um systray neste sistema."
+
+#: qtct/mainwindow.py:43 qtct/ui/mainwindow.py:97
+msgid "Captcha Trader Qt Client"
+msgstr "Cliente Captcha Trader Qt"
+
+#: qtct/mainwindow.py:72 qtct/ui/mainwindow.py:112
+msgid "About"
+msgstr "Sobre"
+
+#: qtct/mainwindow.py:150
+msgid "Waiting"
+msgstr "A aguardar"
+
+#: qtct/mainwindow.py:151
+msgid "Failed"
+msgstr "Falhou"
+
+#: qtct/mainwindow.py:152
+msgid "Correct"
+msgstr "Correcto"
+
+#: qtct/mainwindow.py:153
+msgid "Skipped"
+msgstr "Pulado"
+
+#: qtct/mainwindow.py:163
+msgid "Ticket ID"
+msgstr "Bilhete"
+
+#: qtct/mainwindow.py:165
+msgid "Captcha"
+msgstr ""
+
+#: qtct/mainwindow.py:167
+msgid "Solution"
+msgstr "Solução"
+
+#: qtct/mainwindow.py:169
+msgid "Status"
+msgstr "Estado"
+
+#: qtct/mainwindow.py:225
+msgid "Not Available"
+msgstr "Indisponível"
+
+#: qtct/mainwindow.py:244
+msgid "Credits:"
+msgstr "Créditos:"
+
+#: qtct/mainwindow.py:248
+msgid "Next Captcha:"
+msgstr "Próximo Captcha:"
+
+#: qtct/mainwindow.py:253
+#, python-format
+msgid "%(secs)s secs"
+msgstr "%(secs)s segs"
+
+#: qtct/mainwindow.py:424
+msgid "Client Stopped"
+msgstr "Cliente Parado"
+
+#: qtct/mainwindow.py:427
+msgid "Starting client"
+msgstr "A iniciar cliente"
+
+#: qtct/mainwindow.py:462
+#, python-format
+msgid ""
+"Credits: %(credits)s<br>Queue position: %(queue_pos)s<br>Waiting for "
+"%(secs)s seconds."
+msgstr ""
+"Creditos: %(credits)s<br>Posição na queue: %(queue_pos)s<br>Aguardar \"\n"
+"\"\n"
+"\"\"%(secs)s seconds."
+
+#: qtct/ui/captchasolver.py:90
+msgid "Solve Captcha"
+msgstr "Resolver Captcha"
+
+#: qtct/ui/captchasolver.py:91
+msgid "Solve"
+msgstr "Resolver"
+
+#: qtct/ui/captchasolver.py:92
+msgid "Skip"
+msgstr "Avançar"
+
+#: qtct/ui/mainwindow.py:98
+msgid "File"
+msgstr "Ficheiro"
+
+#: qtct/ui/mainwindow.py:99
+msgid "Help"
+msgstr "Ajuda"
+
+#: qtct/ui/mainwindow.py:100
+msgid "Start Solving"
+msgstr "Começar a Resolver"
+
+#: qtct/ui/mainwindow.py:101
+msgid "Start Solving Captcha's"
+msgstr "Começar a Resolver Captcha's"
+
+#: qtct/ui/mainwindow.py:102
+msgid "Ctrl+A"
+msgstr ""
+
+#: qtct/ui/mainwindow.py:103
+msgid "Stop Solving"
+msgstr "Parar de Resolver"
+
+#: qtct/ui/mainwindow.py:104
+msgid "Stop Solving Captcha's"
+msgstr "Parar de Resolver Captcha's"
+
+#: qtct/ui/mainwindow.py:105
+msgid "Ctrl+O"
+msgstr ""
+
+#: qtct/ui/mainwindow.py:106 qtct/ui/preferences.py:77
+msgid "Preferences"
+msgstr "Preferências"
+
+#: qtct/ui/mainwindow.py:107
+msgid "Show Preferences"
+msgstr "Exibir Preferências"
+
+#: qtct/ui/mainwindow.py:108
+msgid "Ctrl+P"
+msgstr ""
+
+#: qtct/ui/mainwindow.py:109
+msgid "Quit"
+msgstr "Sair"
+
+#: qtct/ui/mainwindow.py:110
+msgid "Exit"
+msgstr "Sair"
+
+#: qtct/ui/mainwindow.py:111
+msgid "Ctrl+X"
+msgstr ""
+
+#: qtct/ui/mainwindow.py:113
+msgid "Show Captcha Client"
+msgstr "Exibir Cliente Captcha"
+
+#: qtct/ui/preferences.py:78
+msgid "Account"
+msgstr "Conta"
+
+#: qtct/ui/preferences.py:79
+msgid "Username"
+msgstr "Nome de Utilizador"
+
+#: qtct/ui/preferences.py:80
+msgid "Password"
+msgstr "Palavra-passe"
+
+#: qtct/ui/preferences.py:81 qtct/ui/preferences.py:82
+msgid "Start solving captcha's once started"
+msgstr "Começar a resolver captcha's após o início"
+
+#: qtct/ui/preferences.py:83
+msgid "Do not show the main window when starting."
+msgstr "Não exibir a janela príncipal após iniciar."
+
+#: qtct/ui/preferences.py:84
+msgid "Start minimized"
+msgstr "Iniciar Minimizado"
+
+#: qtct/ui/preferences.py:85
+msgid "Show credits and wait time in toolbar instead of the status bar"
+msgstr "Exibir créditos e tempo de espera na toolbar em vez de exibir na statusbar"
+
+#: qtct/ui/preferences.py:86
+msgid "Show credits and wait time in toolbar"
+msgstr "Exibir créditos e tempo de espera na toolbar"
+
+#: qtct/ui/preferences.py:87
+msgid "Language"
+msgstr "Linguagem"
+
+#: qtct/ui/preferences.py:88
+msgid "Requires a restart!"
+msgstr "Necessita reiniciar a aplicação!"
+
+#: qtct/utils/debug.py:53
+#, python-format
+msgid ""
+"Application Name: %(appname)s\n"
+"Version: %(version)s\n"
+"\n"
+"%(error)s"
+msgstr ""
+"Nome da Aplicação: %(appname)s\"\n"
+"\"Versão: %(version)s\"\n"
+"\"%(error)s"
+
+#: qtct/utils/debug.py:67
+msgid "Error Report"
+msgstr "Relatório de Erros"
+
+#: qtct/utils/debug.py:72
+msgid ""
+"Something went wrong. Would you like to send the error report to "
+"UfSoft.org?"
+msgstr ""
+"Passou-se algo de errado. Quer enviar um relatório de erros para \"\n"
+"\"\n"
+"\"\"UfSoft.org?"
+
+#: qtct/utils/debug.py:80
+msgid ""
+"Although the application should continue to run after this error, it may "
+"be in an unstable state, so it is recommended that you restart the "
+"application."
+msgstr ""
+"Embora a aplicação deva continuar a correr depois deste erro, poderá \"\n"
+"\"\n"
+"\"\"encontra-se unm estado instável, portanto, é recomendável reiniciar a"
+" \"\n"
+"\"\"\n"
+"\"\n"
+"\"\"aplicação."
+
+#: qtct/utils/debug.py:93
+msgid "Don't Send"
+msgstr "Não Enviar"
+
+#: qtct/utils/debug.py:97
+msgid "Send"
+msgstr "Enviar"
+
