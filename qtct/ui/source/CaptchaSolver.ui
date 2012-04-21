@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>183</width>
+    <width>200</width>
     <height>88</height>
    </rect>
   </property>
@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources/resources.qrc">
-    <normaloff>:/logo.svg</normaloff>:/logo.svg</iconset>
+    <normaloff>:/logo.png</normaloff>:/logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="margin">
@@ -47,7 +47,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -68,6 +68,19 @@
        <property name="margin">
         <number>3</number>
        </property>
+       <item>
+        <widget class="QLabel" name="timeoutLabel">
+         <property name="text">
+          <string notr="true">20</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="margin">
+          <number>5</number>
+         </property>
+        </widget>
+       </item>
        <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">

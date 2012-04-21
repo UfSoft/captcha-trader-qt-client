@@ -4,9 +4,14 @@
         <file>skip.png</file>
         <file>start.png</file>
         <file>stop.png</file>
-        <file>captcha_wait.svg</file>
-        <file>captcha_failed.svg</file>
-        <file>captcha_ok.svg</file>
-        <file>logo.svg</file>
+        <file>configure.png</file>
+        <file>quit.png</file>
+        <file>about.png</file>
+        <file>captcha_failed.png</file>
+        <file>captcha_ok.png</file>
+        <file>captcha_wait.png</file>
+        <file>captcha_skipped.png</file>
+        <file>logo_big.png</file>
+        <file>logo.png</file>
     </qresource>
 </RCC>

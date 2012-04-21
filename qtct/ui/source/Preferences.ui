@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>168</height>
+    <width>345</width>
+    <height>208</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources/resources.qrc">
+   <iconset>
     <normaloff>:/logo.png</normaloff>:/logo.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -72,10 +72,47 @@
      </item>
      <item>
       <layout class="QFormLayout" name="formLayout_2">
-       <item row="0" column="0" colspan="2">
+       <item row="1" column="0" colspan="2">
         <widget class="QCheckBox" name="solve_once_started">
+         <property name="toolTip">
+          <string>Start solving captcha's once started</string>
+         </property>
          <property name="text">
           <string>Start solving captcha's once started</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QCheckBox" name="start_minimized">
+         <property name="toolTip">
+          <string>Do not show the main window when starting.</string>
+         </property>
+         <property name="text">
+          <string>Start minimized</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="credits_in_toolbar">
+         <property name="toolTip">
+          <string>Show credits and wait time in toolbar instead of the status bar</string>
+         </property>
+         <property name="text">
+          <string>Show credits and wait time in toolbar</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Language</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="languageCombo">
+         <property name="toolTip">
+          <string>Requires a restart!</string>
          </property>
         </widget>
        </item>
