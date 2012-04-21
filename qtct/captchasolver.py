@@ -9,7 +9,7 @@
 
 import logging
 from PySide import QtCore, QtGui
-from qtct.ui.captchasolve import Ui_CaptchaSolverDialog
+from qtct.ui.captchasolver import Ui_CaptchaSolverDialog
 
 log = logging.getLogger(__name__)
 
@@ -31,14 +31,27 @@ class CaptchaSolver(QtGui.QDialog, Ui_CaptchaSolverDialog):
         self.captchaSolution.setFont(newFont)
         self.parent().client.NewCaptcha.connect(self.NewCaptcha.emit)
         self.NewCaptcha.connect(self.on_client_NewCaptcha)
+        self.counter = 0
+        self.counter_timer = QtCore.QTimer()
+        self.counter_timer.setInterval(1000)
+        self.counter_timer.timeout.connect(self.on_timer_timeout)
+        self.keypress_timer = QtCore.QTimer()
+        self.keypress_timer.setInterval(1000)
+        self.keypress_timer.setSingleShot(True)
+        self.keypress_timer.timeout.connect(self.on_keypress_timer_timeout)
+        self.captchaSolution.textEdited.connect(self.on_keypress)
 
 #    @QtCore.Slot(int, QtGui.QImage)
     def on_client_NewCaptcha(self, captchaticket):
         self.captchaSolution.setText("")
+        self.solveButton.setEnabled(False)
         self.__current_jib = captchaticket.ticket_id
         self.captchaLabel.setPixmap(QtGui.QPixmap.fromImage(captchaticket.image))
         self.resize(10, 10)
         self.adjustSize()
+        self.counter = 21
+        self.on_timer_timeout()
+        self.counter_timer.start()
         self.show()
 
 
@@ -46,14 +59,49 @@ class CaptchaSolver(QtGui.QDialog, Ui_CaptchaSolverDialog):
         if self.__current_jib:
             log.info("Submitting captcha solution %r for ticket it %s",
                      self.captchaSolution.text(), self.__current_jib)
-            self.parent().client.answer(
-                self.__current_jib, self.captchaSolution.text()
-            )
+            if self.captchaSolution.text()=="":
+                self.parent().client.skip(self.__current_jib)
+            else:
+                self.parent().client.answer(
+                    self.__current_jib, self.captchaSolution.text()
+                )
             self.__current_jib = None
+        self.counter_timer.stop()
         QtGui.QDialog.accept(self)
+
+    def on_keypress(self):
+        if self.counter_timer.isActive():
+            self.counter_timer.stop()
+        if self.keypress_timer.isActive():
+            self.keypress_timer.stop()
+        self.keypress_timer.start()
+        self.solveButton.setEnabled(self.captchaSolution.text()!="")
 
     def reject(self):
         if self.__current_jib:
             self.parent().client.skip(self.__current_jib)
             self.__current_jib = None
+        if self.counter_timer.isActive():
+            self.counter_timer.stop()
         QtGui.QDialog.reject(self)
+
+    def on_timer_timeout(self):
+        self.counter -= 1
+        if not self.counter:
+            self.reject()
+            return
+
+        if self.counter <= 5:
+            self.timeoutLabel.setText(
+                "<font color=\"red\">%s</font>" % self.counter
+            )
+        elif self.counter <= 10:
+            self.timeoutLabel.setText(
+                "<font color=\"orange\">%s</font>" % self.counter
+            )
+        else:
+            self.timeoutLabel.setText(str(self.counter))
+
+    def on_keypress_timer_timeout(self):
+        if not self.counter_timer.isActive():
+            self.counter_timer.start()
