@@ -524,6 +524,7 @@ class CaptchaTrader(QtCore.QObject):
                 log.error("Failed get solutions: %s", error)
             elif data[0] == 0:
                 log.trace("Foo: %s", data[1])
+                self.GotCredits.emit(data[2])
                 for jid, solved in data[1].iteritems():
                     if solved is None:
                         log.trace("Not jid %s not yet solved.", jid)
@@ -574,17 +575,17 @@ class CaptchaTrader(QtCore.QObject):
         elif reply.req_type == REQ_TYPE_AUTH:
             log.debug("Setting up the http cookiejar")
             cookiejar = self.manager.cookieJar()
+            if cookiejar:
+                for cookie in cookiejar.cookiesForUrl(reply.request().url()):
+                    if cookie.name() == "CaptchaTrader":
+                        self.__cookie_value = cookie.value()
+                        QtCore.QTimer.singleShot(60*60*1000, self.__authenticate)
 
-            for cookie in cookiejar.cookiesForUrl(reply.request().url()):
-                if cookie.name() == "CaptchaTrader":
-                    self.__cookie_value = cookie.value()
-                    QtCore.QTimer.singleShot(60*60*1000, self.__authenticate)
-
-            cookiejar.setCookiesFromUrl(
-                cookiejar.cookiesForUrl(reply.request().url()),
-                QtCore.QUrl(self.API_URL)
-            )
-            self.manager.setCookieJar(cookiejar)
+                cookiejar.setCookiesFromUrl(
+                    cookiejar.cookiesForUrl(reply.request().url()),
+                    QtCore.QUrl(self.API_URL)
+                )
+                self.manager.setCookieJar(cookiejar)
         else:
             log.warning("!!!!!!!!!!! %s", reply)
             log.warning("%s", reply.readAll())
