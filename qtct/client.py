@@ -612,6 +612,10 @@ class CaptchaTrader(QtCore.QObject):
         )
         log.info("Processing")
         if kwargs:
+            request.setHeader(
+                QtNetwork.QNetworkRequest.ContentTypeHeader,
+                "application/x-www-form-urlencoded"
+            )
             request.setUrl(QtCore.QUrl("{0}/{1}/".format(self.API_URL, path)))
             params = QtCore.QUrl()
             for key, value in kwargs.iteritems():
@@ -629,6 +633,10 @@ class CaptchaTrader(QtCore.QObject):
 
     def __authenticate(self):
         request = QtNetwork.QNetworkRequest()
+        request.setHeader(
+            QtNetwork.QNetworkRequest.ContentTypeHeader,
+            "application/x-www-form-urlencoded"
+        )
         request.setRawHeader(
             "User-Agent", "{0} {1}".format(__package_name__, __version__)
         )
