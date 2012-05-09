@@ -397,6 +397,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.tray_icon = QtGui.QSystemTrayIcon(self)
         self.tray_icon.setIcon(QtGui.QPixmap(":/logo.png"))
         self.tray_icon.setContextMenu(self.systray_menu)
+        self.tray_icon.activated.connect(self.on_systray_activated)
         self.tray_icon.show()
 
     def show_about(self):
@@ -455,6 +456,10 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
 
     def on_client_GotCredits(self, credits):
         self.creditsWidget.setValue(str(credits))
+
+    def on_systray_activated(self, reason):
+        if reason == QtGui.QSystemTrayIcon.DoubleClick:
+            self.actionShowClient.toggle()
 
     def update_tooltip(self):
         if self.__queue_pos is not None and self.__wait_time is not None:
