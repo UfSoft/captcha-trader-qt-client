@@ -9,11 +9,13 @@
 
 import logging
 from PySide import QtCore, QtGui
+from qtct.ui import MaintainStateAndGeometry
 from qtct.ui.preferences import Ui_PrefsDialog
 from qtct.utils.i18n import get_available_locales, Translations
 
 log = logging.getLogger(__name__)
 
+@MaintainStateAndGeometry
 class Preferences(QtGui.QDialog, Ui_PrefsDialog):
 
     Changed = QtCore.Signal()
