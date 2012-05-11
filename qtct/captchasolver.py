@@ -91,13 +91,9 @@ class CaptchaSolver(QtGui.QDialog, Ui_CaptchaSolverDialog):
             self.reject()
             return
 
-        if self.counter <= 5:
+        if self.counter <= 10:
             self.timeoutLabel.setText(
                 "<font color=\"red\">%s</font>" % self.counter
-            )
-        elif self.counter <= 10:
-            self.timeoutLabel.setText(
-                "<font color=\"orange\">%s</font>" % self.counter
             )
         else:
             self.timeoutLabel.setText(str(self.counter))
