@@ -135,11 +135,9 @@ class CaptchaTrader(QtCore.QObject):
     #===========================================================================
     # State Handling
     def start(self):
-#        self.__state.set_state(STATE_STARTING)
         self.__StateChanged.emit(self.__state, STATE_STARTING)
 
     def stop(self):
-#        self.__state.set_state(STATE_STOPPING)
         self.__StateChanged.emit(self.__state, STATE_STOPPING)
 
     def quit(self):
@@ -149,10 +147,8 @@ class CaptchaTrader(QtCore.QObject):
 
     def isRunning(self):
         return self.__state >= STATE_RUNNING
-#        return self.__state.get_state() >= STATE_RUNNING
 
     def __on_StateChanged(self, prev, state):
-#        self.__state_lock.lock()
         st = {
             0: "STATE_STOPPED",
             1: "STATE_STOPPING",
@@ -175,29 +171,23 @@ class CaptchaTrader(QtCore.QObject):
                 QtCore.QTimer.singleShot(50, delayed)
 
         elif state == STATE_STARTING:
+            QtCore.QTimer.singleShot(50, self.__authenticate)
             if prev == STATE_STOPPED:
                 def delayed():
                     self.__StateChanged.emit(state, STATE_RUNNING)
                 QtCore.QTimer.singleShot(50, delayed)
-#                self.__StateChanged.emit(state, STATE_RUNNING)
         elif state == STATE_RUNNING:
-#            if prev == STATE_ANSWERING:
-#                self.enqueue()
-            if prev in (STATE_ANSWERING, STATE_RUNNING,
-                        STATE_STARTING):
-                QtCore.QTimer.singleShot(50, self.__authenticate)
+            if prev in (STATE_ANSWERING, STATE_RUNNING, STATE_STARTING):
                 QtCore.QTimer.singleShot(100, self.get_credits)
                 QtCore.QTimer.singleShot(150, self.enqueue)
         elif state == STATE_ENQUEUED:
-            self.get_wait_time()
+            QtCore.QTimer.singleShot(50, self.get_wait_time)
         elif state == STATE_ANSWERING:
             pass
-#            if prev == STATE_ENQUEUED
         # Store and propagate signal
         self.StateChanged.emit(self.__state, state)
         self.__state = state
         log.info("State changed to %s", st[state])
-#        self.__state_lock.unlock()
     # State Handling
     #===========================================================================
 
@@ -210,18 +200,15 @@ class CaptchaTrader(QtCore.QObject):
     @QtCore.Slot()
     def __on_GetCredits(self):
         if REQ_TYPE_CREDITS in self.__replies:
-#        if self.__GetCredits_reply is not None:
             log.info("Not requesting credits again. Wait until last credits "
                      "request has finished...")
             return
 
         log.info("Loading credits")
-#        self.__reply_lock.lock()
         reply = self.__send_request("get_credits")
         reply.error[QtNetwork.QNetworkReply.NetworkError].connect(self.__on_error)
         reply.req_type = REQ_TYPE_CREDITS
         self.__replies.add(REQ_TYPE_CREDITS)
-#        self.__reply_lock.unlock()
 
     def __on_GotCredits(self, data):
         self.__replies.remove(REQ_TYPE_CREDITS)
@@ -247,27 +234,12 @@ class CaptchaTrader(QtCore.QObject):
             return
         elif self.__state >= STATE_ENQUEUED:
             return
-#        elif self.__state < STATE_ENQUEUED:
-#            stored = self.__state
-#            if stored < STATE_STARTING:
-#                stored = STATE_STARTING
-##                self.__StateChanged.emit(stored)
-#            while True:
-#                if stored >= STATE_ENQUEUED:
-#                    break
-#                self.__StateChanged.emit(stored)
-#                stored += 1
 
         log.info("Enqueue'ing")
-#        self.__reply_lock.lock()
         reply = self.__send_request("enqueue")
         reply.error[QtNetwork.QNetworkReply.NetworkError].connect(self.__on_error)
         reply.req_type = REQ_TYPE_ENQUEUE
         self.__replies.add(REQ_TYPE_ENQUEUE)
-#        self.__reply_lock.unlock()
-#        def delayed():
-#            self.__StateChanged.emit(self.__state, STATE_ENQUEUED)
-#        QtCore.QTimer.singleShot(500, delayed)
         QtCore.QTimer.singleShot(
             500, partial(self.__StateChanged.emit, self.__state, STATE_ENQUEUED)
         )
@@ -284,7 +256,8 @@ class CaptchaTrader(QtCore.QObject):
             if ticket < 0:
                 log.error("Failed enqueue request: %s", self.ERRORS.get(image_data, image_data))
                 if image_data == "CONNECTION LIMIT":
-                    QtCore.QTimer.singleShot(500, self.dequeue)
+                    QtCore.QTimer.singleShot(1000, self.dequeue)
+                    QtCore.QTimer.singleShot(1500, self.enqueue)
                 if image_data != "DEQUEUE":
                     self.__StateChanged.emit(self.__state, STATE_RUNNING)
                 return
@@ -297,15 +270,11 @@ class CaptchaTrader(QtCore.QObject):
                 log.error("Failed to create a QImage with the provided data")
                 self.__StateChanged.emit(self.__state, STATE_RUNNING)
             else:
-#                print 89000000, image.height()
-#                scaled = image.scaledToHeight(65)
                 log.info("Got a new captcha request. Ticket ID: %s", ticket)
                 self.__StateChanged.emit(self.__state, STATE_ANSWERING)
-#                self.NewCaptcha.emit(ticket, scaled)
                 captchaticket = CaptchaTicket(self, ticket, image)
                 self.__tickets[ticket] = captchaticket
                 self.NewCaptcha.emit(captchaticket)
-
     # Enqueue
     #===========================================================================
 
@@ -321,14 +290,12 @@ class CaptchaTrader(QtCore.QObject):
         elif self.__state < STATE_ENQUEUED:
             return
         log.info("Dequeue'ing")
-#        self.__reply_lock.lock()
         reply = self.__send_request(
             "dequeue", username=self.username, password=self.password
         )
         reply.error[QtNetwork.QNetworkReply.NetworkError].connect(self.__on_error)
         reply.req_type = REQ_TYPE_DEQUEUE
         self.__replies.add(REQ_TYPE_DEQUEUE)
-#        self.__reply_lock.unlock()
 
     def __on_Dequeued(self, data):
         self.__replies.remove(REQ_TYPE_DEQUEUE)
@@ -360,12 +327,10 @@ class CaptchaTrader(QtCore.QObject):
         elif self.__state > STATE_ENQUEUED:
             return
         log.info("Get Wait Time")
-#        self.__reply_lock.lock()
         reply = self.__send_request("get_wait_time")
         reply.req_type = REQ_TYPE_WAITTIME
         reply.error[QtNetwork.QNetworkReply.NetworkError].connect(self.__on_error)
         self.__replies.add(REQ_TYPE_WAITTIME)
-#        self.__reply_lock.unlock()
 
     def __on_GotWaitTime(self, data):
         self.__replies.remove(REQ_TYPE_WAITTIME)
@@ -406,8 +371,7 @@ class CaptchaTrader(QtCore.QObject):
         self.__Answer.emit(jid, "")
 
     def __on_Answer(self, jid, answer):
-        log.info("Submiting captcha solution %r for ticket it %s", answer, jid)
-#        self.__reply_lock.lock()
+        log.info("Submitting captcha solution %r for ticket it %s", answer, jid)
         reply = self.__send_request(
             "answer", password=self.password, username=self.username,
             ticket=jid, value=answer.encode('utf-8')
@@ -420,11 +384,12 @@ class CaptchaTrader(QtCore.QObject):
         reply.jid = jid
         reply.solution = answer
         self.__replies.add(REQ_TYPE_ANSWER)
-#        self.__reply_lock.unlock()
 
     def __on_Answered(self, jid, solution, data):
+        if REQ_TYPE_ANSWER in self.__replies:
+            self.__replies.remove(REQ_TYPE_ANSWER)
+
         log.info("Answered")
-        self.__replies.remove(REQ_TYPE_ANSWER)
         try:
             data = json.loads(data)
             if data[0] < 0:
@@ -443,8 +408,6 @@ class CaptchaTrader(QtCore.QObject):
         if self.__state == STATE_ANSWERING:
             self.__StateChanged.emit(self.__state, STATE_RUNNING)
 
-#        QtCore.QTimer.singleShot(1000, partial(self.get_solution, jid))
-#        QtCore.QTimer.singleShot(1000, partial(self.__GetSolution.emit, jid))
         QtCore.QTimer.singleShot(2500, self.get_solution)
     # Answer Captcha
     #===========================================================================
@@ -462,8 +425,6 @@ class CaptchaTrader(QtCore.QObject):
         if self.__cookie_value is None:
             self.__authenticate()
             return
-
-        print self.__tickets.values()
 
         for ticket_id, ticket in self.__tickets.iteritems():
             if ticket.solutionAvailable():
@@ -493,7 +454,6 @@ class CaptchaTrader(QtCore.QObject):
 
         log.info("Querying for solution regarding ticket: %s", ticket_id)
 
-#        self.__reply_lock.lock()
         request = QtNetwork.QNetworkRequest()
         request.setRawHeader(
             "User-Agent", "{0} {1}".format(__package_name__, __version__)
@@ -503,18 +463,16 @@ class CaptchaTrader(QtCore.QObject):
                 self.API_URL, self.__cookie_value, ticket_id
             )
         )
-        log.trace("FOOOO: %s", url)
+        log.trace("Solution URL: %s", url)
         request.setUrl(url)
         reply = self.manager.get(request)
         reply.error[QtNetwork.QNetworkReply.NetworkError].connect(self.__on_error)
         reply.req_type = REQ_TYPE_SOLUTION
         reply.ticket_id = ticket_id
         self.__replies.add(REQ_TYPE_SOLUTION)
-#        self.__reply_lock.unlock()
 
     def __on_GotSolution(self, data):
         self.__replies.remove(REQ_TYPE_SOLUTION)
-        # [0,{"286619330":null},232]
 
         try:
             data = json.loads(data)
@@ -561,17 +519,6 @@ class CaptchaTrader(QtCore.QObject):
             self.__Answered.emit(reply.jid, reply.solution, str(reply.readAll()))
         elif reply.req_type == REQ_TYPE_SOLUTION:
             self.__GotSolution.emit(str(reply.readAll()))
-#
-#            request = reply.request()
-#            print 'REQUEST DETAILS:', request.url()
-#            try:
-#                print 'TYPE:', type(request.req_type), request.req_type
-#            except Exception:
-#                print
-#            print 'Headers:'
-#            for header in request.rawHeaderList():
-#                print "%s: %s" % (header, request.rawHeader(header))
-
         elif reply.req_type == REQ_TYPE_AUTH:
             log.debug("Setting up the http cookiejar")
             cookiejar = self.manager.cookieJar()
@@ -579,7 +526,6 @@ class CaptchaTrader(QtCore.QObject):
                 for cookie in cookiejar.cookiesForUrl(reply.request().url()):
                     if cookie.name() == "CaptchaTrader":
                         self.__cookie_value = cookie.value()
-                        QtCore.QTimer.singleShot(60*60*1000, self.__authenticate)
 
                 cookiejar.setCookiesFromUrl(
                     cookiejar.cookiesForUrl(reply.request().url()),
@@ -603,7 +549,11 @@ class CaptchaTrader(QtCore.QObject):
         reply.deleteLater()
 
     def __on_error(self, error):
-        log.error(error)
+        NetworkErrors = QtNetwork.QNetworkReply.NetworkError
+        if error == NetworkErrors.AuthenticationRequiredError:
+            self.__authenticate()
+        else:
+            log.error(error)
 
     def __send_request(self, path, **kwargs):
         request = QtNetwork.QNetworkRequest()
@@ -632,6 +582,7 @@ class CaptchaTrader(QtCore.QObject):
 
 
     def __authenticate(self):
+        log.info("Sending authentication request")
         request = QtNetwork.QNetworkRequest()
         request.setHeader(
             QtNetwork.QNetworkRequest.ContentTypeHeader,
